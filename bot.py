@@ -201,4 +201,3 @@ class Handler(BaseHTTPRequestHandler):
 
 if __name__ == "__main__":
     print("3 DIGIT BOT ACTIVE ON PORT", PORT, flush=True)
-    ThreadingHTTPServer(("0.0.0.0", PORT), Handler).serve_forever
