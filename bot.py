@@ -1,53 +1,6 @@
-import json
-import os
-from pathlib import Path
-from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
-from threading import Lock
-from datetime import datetime, timezone
-
-PORT = int(os.environ.get("PORT", "8000"))
-DATA_FILE = Path("periods.json")
-lock = Lock()
-
-
-def load_data():
-    try:
-        data = json.loads(DATA_FILE.read_text(encoding="utf-8"))
-        return data if isinstance(data, list) else []
-    except Exception:
-        return []
-
-
-periods = load_data()
-
-
-def save_data():
-    DATA_FILE.write_text(
-        json.dumps(periods[-100:], ensure_ascii=False),
-        encoding="utf-8"
-    )
-
-
-def analyze(period):
-    next_period = (int(period) + 1) % 1000
-    next_period = f"{next_period:03d}"
-
-    # Demo rule only; not a real market prediction.
-    signal = "BIG" if int(next_period[-1]) >= 5 else "SMALL"
-
-    return {
-        "period": period,
-        "next_period": next_period,
-        "signal": signal,
-        "confidence": "N/A",
-        "note": "Period-based demo signal, not a guaranteed prediction."
-    }
-
-
 HTML = r"""
 <!DOCTYPE html>
-<html>
-<head>
+<htmlrecentd>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>3 Digit BIG SMALL BOT</title>
 <style>
@@ -248,4 +201,4 @@ class Handler(BaseHTTPRequestHandler):
 
 if __name__ == "__main__":
     print("3 DIGIT BOT ACTIVE ON PORT", PORT, flush=True)
-    ThreadingHTTPServer(("0.0.0.0", PORT), Handler).serve_forever()
+    ThreadingHTTPServer(("0.0.0.0", PORT), Handler).serve_forever
